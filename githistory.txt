@@ -1,0 +1,184 @@
+    1  curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    2  chmod 700 get_helm.sh
+    3  sudo apt update
+    4  apt install openssh-server
+    5  sudo apt install openssh-server
+    6  sudo apt install traceroute
+    7  sudo apt install curl
+    8  ip a
+    9  hostnamectl set-hostname tapcli
+   10  docker login docker login harbortko.pse.lab 
+   11  docker login harbortko.pse.lab 
+   12  kubectl
+   13  k get secrets -n kapp-controller
+   14  cd tanzu
+   15  ./login-vsadmin-tkoop-simplecls2.sh 
+   16  k get secrets -n kapp-controller
+   17  docker ps
+   18  docker login harbortko.pse.lab 
+   19  ls
+   20  ls /etc/docker/
+   21  mkdir /etc/docker/certs.d
+   22  sudo mkdir /etc/docker/certs.d
+   23  sudo mkdir /etc/docker/certs.d/harbortko.pse.lab
+   24  sudo cp ca.crt /etc/docker/certs.d/harbortko.pse.lab
+   25  systemctl restart dcoker
+   26  docker login harbortko.pse.lab 
+   27  docker login registry.tanzu.vmware.com
+   28  export INSTALL_REGISTRY_USERNAME=admin
+   29  export INSTALL_REGISTRY_PASSWORD=CCIroot@1
+   30  export INSTALL_REGISTRY_HOSTNAME=harbortko.pse.lab
+   31  export TAP_VERSION=1.3.6
+   32  export INSTALL_REPO=/tap
+   33  imgpkg tag list -i registry.tanzu.vmware.com/tanzu-application-platform/tap-packages | grep -v sha | sort -V
+   34  imgpkg copy -b registry.tanzu.vmware.com/tanzu-application-platform/tap-packages:${TAP_VERSION} --to-repo ${INSTALL_REGISTRY_HOSTNAME}/${INSTALL_REPO}/tap-packages
+   35  imgpkg copy -b registry.tanzu.vmware.com/tanzu-application-platform/tap-packages:${TAP_VERSION} --to-repo ${INSTALL_REGISTRY_HOSTNAME}/${INSTALL_REPO}/tap-packages --registry-ca-cert-path /home/aj/tanzu/ca.crt 
+   36  docker login harbortko.pse.lab 
+   37  docker login registry.tanzu.vmware.com
+   38  imgpkg copy -b registry.tanzu.vmware.com/tanzu-application-platform/tap-packages:${TAP_VERSION} --to-repo ${INSTALL_REGISTRY_HOSTNAME}/${INSTALL_REPO}/tap-packages --registry-ca-cert-path /home/aj/tanzu/ca.crt 
+   39  export INSTALL_REPO=tap
+   40  imgpkg copy -b registry.tanzu.vmware.com/tanzu-application-platform/tap-packages:${TAP_VERSION} --to-repo ${INSTALL_REGISTRY_HOSTNAME}/${INSTALL_REPO}/tap-packages --registry-ca-cert-path /home/aj/tanzu/ca.crt 
+   41  kubectl create ns tap-install
+   42  ./login-vsadmin-tkoop-simplecls2.sh 
+   43  kubectl create ns tap-install
+   44  tanzu secret registry add tap-registry   --username ${INSTALL_REGISTRY_USERNAME} --password ${INSTALL_REGISTRY_PASSWORD}   --server ${INSTALL_REGISTRY_HOSTNAME}   --export-to-all-namespaces --yes --namespace tap-install
+   45  tanzu package repository add tanzu-tap-repository   --url ${INSTALL_REGISTRY_HOSTNAME}/${INSTALL_REPO}/tap-packages:$TAP_VERSION   --namespace tap-install
+   46  tanzu package repository get tanzu-tap-repository --namespace tap-install
+   47  tanzu package available list --namespace tap-install
+   48  tanzu package available list tap.tanzu.vmware.com --namespace tap-install
+   49  ./login-vsadmin-tkoop-simplecls2.sh 
+   50  tanzu package available list tap.tanzu.vmware.com --namespace tap-install
+   51  tanzu plugin list
+   52  ./login-vsadmin-tkoop-simplecls2.sh 
+   53  k get ns
+   54  k create ns avi-system
+   55  helm
+   56  helm list 
+   57  helm repo add ako https://projects.registry.vmware.com/chartrepo/ako
+   58  ls
+   59  helm install ako/ako --generate-name --version 1.7.1 -f ako-4-tap.yml --set ControllerSettings.controllerHost=172.29.250.250 --set avicredentials.username=admin --set avicredentials.password=P@ssw0rd --namespace=avi-system
+   60  k logs -n avi-system ako-0
+   61  KUBE_EDITOR="/usr/bin/rnano" kubectl edit configmap avi-k8s-config -n avi-system
+   62  helm list -n avi-system
+   63  helm uninstall ako-1678980506 -n avi-system
+   64  helm show values ako/ako --version 1.7.1 > tap-ako-values.yaml
+   65  ls
+   66  helm install ako/ako --generate-name --version 1.7.1 -f tap-ako-values.yaml --set ControllerSettings.controllerHost=172.29.250.250 --set avicredentials.username=admin --set avicredentials.password=P@ssw0rd --namespace=avi-system
+   67  k logs -n avi-system ako-0
+   68  cat sa.yaml
+   69  k get sa
+   70  k get sa -n yelb
+   71  k create sa dockerauth
+   72  k describe sa dockerauth
+   73  k delete sa dockerauth
+   74  k create sa dockerauth -n yelb
+   75  k create ns yelb
+   76  k create sa dockerauth -n yelb
+   77  k describe sa dockerauth
+   78  k describe sa dockerauth -n yelb
+   79  kubectl get serviceaccounts dockerauth -n yelb -o yaml > ./sa.yaml
+   80  ls
+   81  cat sa.yaml 
+   82  kubectl replace serviceaccount dockerauth -n yelb -f ./sa.yaml
+   83  ls ~/.docker/config.json 
+   84  cat ~/.docker/config.json 
+   85  docker login
+   86  cat ~/.docker/config.json 
+   87  k get secrets
+   88  k get secrets --all-namespaces
+   89  k apply -f yelb-lb.yaml 
+   90  k get pods -n yelb
+   91  k logs redis-server-84bdc6df49-kf7f8 -n yelb
+   92  k delete -f yelb-lb.yaml 
+   93  k get pods -n yelb
+   94  k delete sa dockerauth -n yelb
+   95  kubectl create secret generic regcred --from-file=.dockerconfigjson=/home/aj/.docker/config.json  --type=kubernetes.io/dockerconfigjson
+   96  k get secret dockeregcred --namespace=default -o yaml | sed 's/namespace: .*/namespace: yelb/' | k apply -f -
+   97  k get secret regcred --namespace=default -o yaml | sed 's/namespace: .*/namespace: yelb/' | k apply -f -
+   98  k apply -f yelb-lb.yaml 
+   99  k get pods -n yelb
+  100  k logs ako-0 avi-system
+  101  k get pods -n avi-system
+  102  k logs ako-0 -n avi-system
+  103  k get svc -n yelb
+  104  k logs ako-0 -n avi-system
+  105  hg edit
+  106  KUBE_EDITOR="/usr/bin/rnano" kubectl edit configmap avi-k8s-config -n avi-system
+  107  k delete -f yelb-lb.yaml 
+  108  helm list -n avi-system
+  109  helm uninstall ako-1678984214 -n avi-system
+  110  hg helm
+  111  helm install ako/ako --generate-name --version 1.7.1 -f tap-ako-values.yaml --set ControllerSettings.controllerHost=172.29.250.250 --set avicredentials.username=admin --set avicredentials.password=P@ssw0rd --namespace=avi-system
+  112  k apply -f yelb-lb.yaml 
+  113  k logs ako-0 -n avi-system
+  114  KUBE_EDITOR="/usr/bin/rnano" kubectl edit configmap avi-k8s-config -n avi-system
+  115  helm list -n avi-system
+  116  k delete -f yelb-lb.yaml 
+  117  helm uninstall -n avi-system ako-1678996539
+  118  k apply -f yelb-lb.yaml 
+  119  k pods -n yelb
+  120  k get pods -n yelb
+  121  k get svc -n yelb
+  122  helm install ako/ako --generate-name --version 1.7.1 -f tap-ako-values.yaml --set ControllerSettings.controllerHost=172.29.250.250 --set avicredentials.username=admin --set avicredentials.password=P@ssw0rd --namespace=avi-system
+  123  k logs ako-0 -n avi-system
+  124  k delete -f yelb-lb.yaml 
+  125  KUBE_EDITOR="/usr/bin/rnano" kubectl edit configmap avi-k8s-config -n avi-system
+  126  helm list -n avi-system
+  127  helm uninstall -n avi-system ako-1679007343
+  128  ping 192.168.240.222
+  129  helm install ako/ako --generate-name --version 1.7.1 -f tap-ako-values.yaml --set ControllerSettings.controllerHost=172.29.250.250 --set avicredentials.username=admin --set avicredentials.password=P@ssw0rd --namespace=avi-system
+  130  k apply -f yelb-lb.yaml 
+  131  tanzu package available list --namespace tap-install
+  132  cat ca.crt 
+  133  sudo apt update
+  134  sudo apt install git
+  135  git version
+  136  git config --global user.name "ajam786"
+  137  git config --global user.email "smajamil786@gmail.com"
+  138  git config --list
+  139  git status
+  140* 
+  141  ls ~/.gitconfig 
+  142  cat ~/.gitconfig 
+  143  cd ..
+  144  ls
+  145  mkdir gitrepo
+  146  cd gitrepo/
+  147  git init
+  148  ls
+  149  git add .
+  150  ls .git/
+  151  git commit -m
+  152  git commit
+  153  git commit -m tap-catalog
+  154  git add origin master https://github.com/ajam786/tapgui
+  155  git add origin master www.github.com/ajam786/tapgui
+  156  ls .git/
+  157  git config --list
+  158  cd .git/
+  159  git add origin master www.github.com/ajam786/tapgui
+  160  cd ..
+  161  git add origin master www.github.com/ajam786/tapgui
+  162  git push origin master
+  163  git remote add origin master www.github.com/ajam786/tapgui
+  164  git remote add -m origin master www.github.com/ajam786/tapgui
+  165  git push origin master
+  166  git config --list
+  167  git remote -v
+  168  git remote add origin www.github.com/ajam786/tapgui
+  169  git remote -v
+  170  git push origin master
+  171  git remote add origin https://github.com/ajam786/tapgui.git
+  172  git remote -v
+  173  git remote remove origin https://github.com/ajam786/tapgui.git
+  174  git remove origin https://github.com/ajam786/tapgui.git
+  175  git remote remove origin
+  176  git remote -v
+  177  git remote add origin https://github.com/ajam786/tapgui.git
+  178  git remote -v
+  179  git push origin master
+  180  git push origin
+  181  git push origin master
+  182  git pull origin master
+  183  git push origin master
+  184  history > githistory.txt
